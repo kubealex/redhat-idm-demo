@@ -67,7 +67,7 @@
         name: systemd-resolved
         state: restarted
 
-    - name: IdM Demo Lab | Add host to inventory
+    - name: IdM Demo Lab | Add IdM host to inventory
       ansible.builtin.add_host:
         hostname: "idm.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
         ipaserver_domain: "{{ idm_domain }}"
@@ -84,23 +84,40 @@
           - "ipaserver"
       delegate_to: localhost
 
+    - name: IdM Demo Lab | Add client hosts to inventory
+      ansible.builtin.add_host:
+        hostname: "{{ item }}.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
+        ansible_password: "redhat"
+        ansible_user: "sysadmin"
+        ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+        groups:
+          - "ipaclients"
+      delegate_to: localhost
+      loop:
+        - rhel9-idm-client-0
+        - rhel9-idm-client-1
+        
     - name: IdM Demo Lab | Ensure to clean known_hosts
       ansible.builtin.known_hosts:
-        host: "idm.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
+        host: "{{ item }}.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
         path: ~/.ssh/known_hosts
         state: absent
       delegate_to: localhost
+      loop:
+        - idm
+        - rhel9-idm-client-0
+        - rhel9-idm-client-1
 
 - name: IdM Demo Lab | Install IdM
-  hosts: ipaserver
+  hosts: ipaserver,ipaclients
   gather_facts: false
   tasks:
     - name: IdM Demo Lab | Wait 300 seconds for the host to be up
       ansible.builtin.wait_for_connection:
         timeout: 300
 
-- name: IdM Demo Lab | Install IdM
-  hosts: ipaserver
+- name: IdM Demo Lab | Register IdM servers
+  hosts: ipaserver, ipaclients
   become: true
   vars_files:
     - lab_vars.yml
