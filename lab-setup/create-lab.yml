@@ -1,0 +1,116 @@
+---
+- name: IdM Demo Lab | This play provisions Lab VMS based on the required configuration
+  hosts: vm_host
+  vars_files:
+    - lab_vars.yml
+  vars:
+    terraform_url: https://releases.hashicorp.com/terraform/1.8.1/terraform_1.8.1_linux_amd64.zip
+  tasks:
+    - name: IdM Demo Lab | Fail if path to RHEL image is not set
+      ansible.builtin.fail:
+        msg: "You need to specify a valid path to a RHEL QCOW2 image in lab_vars.yml file"
+      when: rhel9_image_path is defined and rhel9_image_path | string == "None" or rhel9_image_path is undefined # noqa yaml[line-length]
+
+    - name: Fail if RHSM credentials are not defined
+      ansible.builtin.fail:
+        msg: "You need to specify your RHSM credentials in the lab_vars.yml file"
+      when: rhsm_user is not defined or rhsm_user | string == "None" or rhsm_password is not defined or rhsm_password | string == "None"
+
+    - name: IdM Demo Lab | Check if Terraform is installed # noqa no-changed-when
+      ansible.builtin.command: which terraform
+      ignore_errors: true
+      register: terraform_check
+
+    - name: IdM Demo Lab | Ensure Terraform is present
+      when: terraform_check.rc != 0
+      ansible.builtin.unarchive:
+        src: "{{ terraform_url }}"
+        dest: /usr/bin/
+        mode: "0755"
+        remote_src: true
+
+    - name: IdM Demo Lab | Ensure needed resources are in place
+      community.general.terraform:
+        complex_vars: true
+        project_path: "{{ playbook_dir }}/terraform"
+        force_init: true
+        variables:
+          idm_instance_cloud_image: "{{ rhel9_image_path }}"
+          rhel9_instance_cloud_image: "{{ rhel9_image_path }}"
+          network_domain: "{{ lab_domain | default('demo.labs', true) }}"
+          network_cidr: '{{ lab_network | default("192.168.254.0/24", true) | split(",") }}'
+          network_dnsmasq_options:
+            server: "/{{ lab_domain | default('demo.labs', true) }}/{{ lab_network | default('192.168.254.0/24', true) | ansible.utils.next_nth_usable(1) }}"
+        state: present
+      register: output_terraform
+
+    - name: IdM Demo Lab | Ensure resolved folder is present
+      become: true
+      ansible.builtin.file:
+        state: directory
+        dest: /etc/systemd/resolved.conf.d/
+        mode: "0755"
+
+    - name: IdM Demo Lab | Configure resolution for the host
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/systemd/resolved.conf.d/{{ lab_domain }}.conf
+        content: |
+          [Resolve]
+          DNS={{ lab_network | default("192.168.254.0/24", true) | ansible.utils.next_nth_usable(1) }}
+          Domains=~{{ lab_domain | default('demo.labs', true) }}
+        mode: "0755"
+
+    - name: IdM Demo Lab | Restart systemd-resolved
+      become: true
+      ansible.builtin.service:
+        name: systemd-resolved
+        state: restarted
+
+    - name: IdM Demo Lab | Add host to inventory
+      ansible.builtin.add_host:
+        hostname: "idm.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
+        ipaserver_domain: "{{ idm_domain }}"
+        ipaserver_realm: "{{ idm_realm }}"
+        ipaserver_setup_dns: "{{ idm_setup_dns | default(true, true) }}"
+        ipaserver_setup_adtrust: "{{ idm_setup_ad_trust | default(true, true) }}"
+        ipaserver_auto_forwarders: "{{ idm_setup_dns_forwarders | default(true, true) }}"
+        ipaadmin_password: "{{ idm_admin_password | default('admin123', ture) }}"
+        ipadm_password: "{{ idm_admin_password | default('admin123', ture) }}"
+        ansible_password: "redhat"
+        ansible_user: "sysadmin"
+        ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+        groups:
+          - "ipaserver"
+      delegate_to: localhost
+
+    - name: IdM Demo Lab | Ensure to clean known_hosts
+      ansible.builtin.known_hosts:
+        host: "idm.{{ lab_domain | default('demo.labs', true) }}" # noqa yaml[line-length]
+        path: ~/.ssh/known_hosts
+        state: absent
+      delegate_to: localhost
+
+- name: IdM Demo Lab | Install IdM
+  hosts: ipaserver
+  gather_facts: false
+  tasks:
+    - name: IdM Demo Lab | Wait 300 seconds for the host to be up
+      ansible.builtin.wait_for_connection:
+        timeout: 300
+
+- name: IdM Demo Lab | Install IdM
+  hosts: ipaserver
+  become: true
+  vars_files:
+    - lab_vars.yml
+  pre_tasks:
+    - name: Register system with Red Hat Subscription Manager
+      community.general.redhat_subscription:
+        state: present
+        username: "{{ rhsm_user }}"
+        password: "{{ rhsm_password }}"
+
+  roles:
+  - role: freeipa.ansible_freeipa.ipaserver
+    state: present

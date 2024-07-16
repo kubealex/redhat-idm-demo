@@ -1,0 +1,10 @@
+lab_domain: demo.labs
+lab_network: 192.168.254.0/24
+idm_domain: demo.labs
+idm_realm: DEMO.LABS
+idm_setup_dns: true
+idm_setup_ad_trust: true
+idm_setup_dns_forwarders: true
+rhel9_image_path: /path/to/qcow2
+rhsm_user: 
+rhsm_password: 
