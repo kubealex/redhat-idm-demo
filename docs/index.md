@@ -13,5 +13,5 @@ It uses a combination of [Ansible](https://www.ansible.com/), [Terraform](https:
 It also takes care of local DNS resolution.
 
 
-- [Getting started with lab setup](./getting-started/lab-setup/)
+- [Getting started with lab setup](./getting-started/lab-setup.md)
 - [Use cases](./use-cases/) [TODO] 

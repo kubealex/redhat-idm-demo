@@ -2,7 +2,7 @@
 
 The setup is performed using KVM, Ansible and Terraform to provide an isolated and easily maintainable environment with Satellite on it with a minimal set of configurations.
 
-Self-containing setup for Ansible is granted using an [execution-environment](./execution-environment/) preconfigured with required collections and roles to provision the infrastructure (KVM network/Instance + Satellite setup)
+Self-containing setup for Ansible is granted using an [execution-environment]({{ config.repo_url }}{{ config.edit_uri}}/lab-setup/execution-environment/) preconfigured with required collections and roles to provision the infrastructure (KVM network/Instance + Satellite setup)
 
 The lab will take care of:
 
