@@ -1,4 +1,4 @@
-# redhat-idm-demo
+# Red Hat Identity Management Demo lab
 
 The intent of this repository is to provide a turnkey environment with some useful use cases to get started with Red Hat IdM and/or show its capabilities in a quick and efficient way.
 
@@ -11,7 +11,6 @@ It uses a combination of [Ansible](https://www.ansible.com/), [Terraform](https:
 | RHEL9 Client | 1 | 2 GB | 10GB | 
 
 It also takes care of local DNS resolution.
-
 
 - [Getting started with lab setup](./getting-started/lab-setup.md)
 - [Use cases](./use-cases/) [TODO] 
