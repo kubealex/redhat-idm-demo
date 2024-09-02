@@ -13,5 +13,5 @@ It uses a combination of [Ansible](https://www.ansible.com/), [Terraform](https:
 It also takes care of local DNS resolution.
 
 
-- [Getting started with lab setup](https://kubealex.github.io/redhat-idm-demo/lab-setup/)
-- [Use cases](https://kubealex.github.io/redhat-idm-demo/use-cases/) [TODO] 
+- [Getting started with lab setup](./getting-started/lab-setup/)
+- [Use cases](./use-cases/) [TODO] 

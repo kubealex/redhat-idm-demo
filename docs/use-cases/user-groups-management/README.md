@@ -12,8 +12,8 @@ Groups in IdM have can be of three different types, *POSIX*, *non-POSIX*, *Exter
 * non-POSIX -> Groups of non-POSIX type cannot have POSIX attributes set (i.e. a GID)
 * External -> These groups are groups that exist outside IdM and do not support POSIX attributes
 
-> [!TIP]
-> More details about group types can be found [in the documentation](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_idm_users_groups_hosts_and_access_control_rules/managing-user-groups-in-idm-web-ui_managing-users-groups-hosts#the-different-group-types-in-idm_managing-user-groups-in-idm-web-ui)
+!!! tip
+    More details about group types can be found [in the documentation](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_idm_users_groups_hosts_and_access_control_rules/managing-user-groups-in-idm-web-ui_managing-users-groups-hosts#the-different-group-types-in-idm_managing-user-groups-in-idm-web-ui)
 
 For the scope of this use case, we will focus on POSIX groups.
 
@@ -38,7 +38,7 @@ Fill the form with the following values:
 
 Leave other fields unchanged, your window will look like this:
 
-![](./assets/user-group-add.pngs)
+![](./assets/user-group-add.png)
 
 Click on "Add", and when back in the main page, click in the **sysadmins** group to review the details.
 

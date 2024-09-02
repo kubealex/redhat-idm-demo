@@ -11,18 +11,6 @@ The lab will take care of:
 - Provisioning KVM instances for 2xRHEL9 Clients
 - Configure and install IdM following documentation best practices
 
-## Index
-
-- [Requirements](#requirements)
-  * [Red Hat Account and Satellite subscription](#red-hat-account-and-rhel-subscription)
-  * [Red Hat Enterprise Linux QCOW2 images](#red-hat-enterprise-linux-qcow2-images)
-  * [Execution Environment](#execution-environment)
-  * [Inventory](#inventory)
-  * [Variables](#variables)
-  * [Running the setup](#running-the-setup)
-  * [Destroying the lab](#destroying-the-lab)
-
-
 ## Requirements
 
 ### Red Hat Account and RHEL subscription
@@ -66,7 +54,15 @@ It will create a container image with all necessary tools to run the automation.
 
 ### Inventory
 
-The [inventory](./inventory) comes with no predefined hosts. 
+The inventory comes with no predefined hosts:
+
+<details>
+  <summary>Example inventory</summary>
+  ```dockerfile
+  --8<-- "lab-setup/inventory"
+  ```
+</details>
+
 The host group **vm_host** represents the machine where KVM is running. A user **with sudo privilege** is required for DNS configuration. Assuming an IP like 1.2.3.4 and a user called **ansible** with password **redhat** the inventory will look like:
 
 ```bash
@@ -76,10 +72,9 @@ The host group **vm_host** represents the machine where KVM is running. A user *
 
 No additional entry is required, but it can be tailored to your needs based on the host configuration (if using SSH keys or other settings).
 
-
 ### Variables
 
-The provisioner comes with almost all predefined values, but a dedicated file called [lab_vars.yml](./lab_vars.yml) is provided to set the following variables:
+The provisioner comes with almost all predefined values, but a dedicated file called [lab_vars.yml]({{ config.repo_url }}{{ config.edit_uri }}/lab-setup/lab_vars.yml) is provided to set the following variables:
 
 | Variable                       | Description                                                              | Default Value            |
 |--------------------------------|--------------------------------------------------------------------------|--------------------------|

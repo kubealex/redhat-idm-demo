@@ -1,0 +1,54 @@
+site_name: Red Hat Identity Management demo
+repo_url: https://github.com/kubealex/redhat-idm-demo/
+edit_uri: blob/main/
+site_author: Alessandro Rossi - Red Hat
+site_description: Documentation page for the Red Hat Identity Management demo hosted on GitHub.
+theme: 
+  name: material
+  favicon: assets/logo.png
+  logo: assets/logo.png
+  font:
+    text: Red Hat Display  
+  features: 
+    - content.code.copy
+    - navigation.expand
+    - content.tooltips
+  palette: 
+    - scheme: default
+      primary: custom
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - scheme: slate
+      primary: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode  
+extra_css:
+  - stylesheets/extra.css          
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Lab setup: getting-started/lab-setup.md
+  - Use Cases:
+    - Enroll a client to Identity Management: use-cases/enroll-client-idm/README.md
+    - Users management: use-cases/users-management/README.md
+    - User groups management: use-cases/user-groups-management/README.md
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: !relative $config_dir
+  - pymdownx.superfences 
+  - attr_list
+  - pymdownx.emoji
+  - abbr
+plugins: 
+  - macros
+

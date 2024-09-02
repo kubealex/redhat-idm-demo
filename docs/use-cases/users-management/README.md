@@ -12,8 +12,8 @@ Users in IdM have a dedicated lifecycle, and can have three different states, *A
 * Active -> Users in this state are fully functional and can be used for any operation.
 * Preserved -> Users in this state are 'archived' meaning that they are not able to authenticate but preserve all settings they had when active, but are removed from groups.
 
-> [!TIP]
-> More details about users lifecycle can be found [in the documentation](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_idm_users_groups_hosts_and_access_control_rules/managing-user-accounts-using-the-idm-web-ui_managing-users-groups-hosts#user-life-cycle_managing-user-accounts-using-the-idm-web-ui)
+!!! tip
+    More details about users lifecycle can be found [in the documentation](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/managing_idm_users_groups_hosts_and_access_control_rules/managing-user-accounts-using-the-idm-web-ui_managing-users-groups-hosts#user-life-cycle_managing-user-accounts-using-the-idm-web-ui)
 
 For the scope of this use case, we will focus on active users.
 
@@ -41,7 +41,7 @@ Fill the form with the following values:
 
 Leave other fields blank, your window will look like this:
 
-![](./assets/user-add-details.png)
+![](./assets/user-add.png)
 
 Click on "Add", and when back in the main page, click in the **sysop** user to review the details.
 
