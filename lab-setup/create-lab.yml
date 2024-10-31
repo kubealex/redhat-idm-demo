@@ -108,7 +108,7 @@
         - rhel9-idm-client-0
         - rhel9-idm-client-1
 
-- name: IdM Demo Lab | Install IdM
+- name: IdM Demo Lab | Wait for IdM servers to be up and running
   hosts: ipaserver,ipaclients
   gather_facts: false
   tasks:
@@ -121,13 +121,27 @@
   become: true
   vars_files:
     - lab_vars.yml
-  pre_tasks:
+  tasks:
     - name: Register system with Red Hat Subscription Manager
       community.general.redhat_subscription:
         state: present
         username: "{{ rhsm_user }}"
         password: "{{ rhsm_password }}"
 
+- name: IdM Demo Lab | Install IDM Server
+  hosts: ipaserver
+  become: true
+  vars_files:
+    - lab_vars.yml
   roles:
   - role: freeipa.ansible_freeipa.ipaserver
     state: present
+
+- name: IdM Demo Lab | Register IDM Clients
+  hosts: ipaclients
+  become: true
+  vars_files:
+    - lab_vars.yml
+  roles:
+  - role: freeipa.ansible_freeipa.ipaclient
+    state: present    
