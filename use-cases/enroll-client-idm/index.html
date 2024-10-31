@@ -1,0 +1,787 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation page for the Red Hat Identity Management demo hosted on GitHub.">
+      
+      
+        <meta name="author" content="Alessandro Rossi - Red Hat">
+      
+      
+      
+        <link rel="prev" href="../../getting-started/lab-setup/">
+      
+      
+        <link rel="next" href="../users-management/">
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
+    
+    
+      
+        <title>Enroll a client to Identity Management - Red Hat Identity Management demo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Red+Hat+Display:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Red Hat Display";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#enrolling-a-client-to-idm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Red Hat Identity Management demo" class="md-header__button md-logo" aria-label="Red Hat Identity Management demo" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Red Hat Identity Management demo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Enroll a client to Identity Management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kubealex/redhat-idm-demo/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Red Hat Identity Management demo" class="md-nav__button md-logo" aria-label="Red Hat Identity Management demo" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    Red Hat Identity Management demo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kubealex/redhat-idm-demo/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/lab-setup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lab setup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Use Cases
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Use Cases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Enroll a client to Identity Management
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Enroll a client to Identity Management
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-required-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install required packages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-host-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify host registration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify host registration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-idm-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the IdM GUI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-in-as-an-idm-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging in as an IdM user
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../users-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Users management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-groups-management/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User groups management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-required-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install required packages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-host-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify host registration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Verify host registration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-idm-gui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the IdM GUI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-in-as-an-idm-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging in as an IdM user
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="enrolling-a-client-to-idm">Enrolling a client to IdM</h1>
+<p>In this section we will configure enroll a client to IdM.</p>
+<h2 id="install-required-packages">Install required packages</h2>
+<p>SSH into one of the created clients:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>ssh<span class="w"> </span>sysadmin@rhel9-idm-client-0.demo.labs
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>❯<span class="w"> </span>ssh<span class="w"> </span>sysadmin@rhel9-idm-client-0.demo.labs
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sysadmin@rhel9-idm-client-0.demo.labs<span class="err">&#39;</span>s<span class="w"> </span>password:<span class="w"> </span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Register<span class="w"> </span>this<span class="w"> </span>system<span class="w"> </span>with<span class="w"> </span>Red<span class="w"> </span>Hat<span class="w"> </span>Insights:<span class="w"> </span>insights-client<span class="w"> </span>--register
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Create<span class="w"> </span>an<span class="w"> </span>account<span class="w"> </span>or<span class="w"> </span>view<span class="w"> </span>all<span class="w"> </span>your<span class="w"> </span>systems<span class="w"> </span>at<span class="w"> </span>https://red.ht/insights-dashboard
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Last<span class="w"> </span>login:<span class="w"> </span>Tue<span class="w"> </span>Jul<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="m">03</span>:39:41<span class="w"> </span><span class="m">2024</span><span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.254.1
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="o">[</span>sysadmin@rhel9-idm-client-0<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>
+</span></code></pre></div>
+<p>Install required <em>ipa-client</em> package:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>ipa-client<span class="w"> </span>-y
+</span></code></pre></div>
+<p>And let's proceed with the ipa-client setup:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>ipa-client-install
+</span></code></pre></div>
+<p>It will try auto-discovering Identity Management DNS record for your domain, and will prompt for a <em>realm admin</em> username and password to enroll the client. When prompted, use the default <strong>admin/admin123</strong> and accept the defaults. We will use the <strong>--mkhomedir</strong> argument to enable auto-creation of user's home directories upon the first login.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">[</span>sysadmin@rhel9-idm-client-0<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>sudo<span class="w"> </span>ipa-client-install<span class="w"> </span>--mkhomedir
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>This<span class="w"> </span>program<span class="w"> </span>will<span class="w"> </span><span class="nb">set</span><span class="w"> </span>up<span class="w"> </span>IPA<span class="w"> </span>client.
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Version<span class="w"> </span><span class="m">4</span>.11.0
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Discovery<span class="w"> </span>was<span class="w"> </span>successful!
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Do<span class="w"> </span>you<span class="w"> </span>want<span class="w"> </span>to<span class="w"> </span>configure<span class="w"> </span>chrony<span class="w"> </span>with<span class="w"> </span>NTP<span class="w"> </span>server<span class="w"> </span>or<span class="w"> </span>pool<span class="w"> </span>address?<span class="w"> </span><span class="o">[</span>no<span class="o">]</span>:<span class="w"> </span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Client<span class="w"> </span>hostname:<span class="w"> </span>rhel9-idm-client-0.demo.labs
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Realm:<span class="w"> </span>DEMO.LABS
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>DNS<span class="w"> </span>Domain:<span class="w"> </span>demo.labs
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>IPA<span class="w"> </span>Server:<span class="w"> </span>idm.demo.labs
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>BaseDN:<span class="w"> </span><span class="nv">dc</span><span class="o">=</span>demo,dc<span class="o">=</span>labs
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Continue<span class="w"> </span>to<span class="w"> </span>configure<span class="w"> </span>the<span class="w"> </span>system<span class="w"> </span>with<span class="w"> </span>these<span class="w"> </span>values?<span class="w"> </span><span class="o">[</span>no<span class="o">]</span>:<span class="w"> </span>yes
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>Synchronizing<span class="w"> </span><span class="nb">time</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>No<span class="w"> </span>SRV<span class="w"> </span>records<span class="w"> </span>of<span class="w"> </span>NTP<span class="w"> </span>servers<span class="w"> </span>found<span class="w"> </span>and<span class="w"> </span>no<span class="w"> </span>NTP<span class="w"> </span>server<span class="w"> </span>or<span class="w"> </span>pool<span class="w"> </span>address<span class="w"> </span>was<span class="w"> </span>provided.
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>Using<span class="w"> </span>default<span class="w"> </span>chrony<span class="w"> </span>configuration.
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>Attempting<span class="w"> </span>to<span class="w"> </span>sync<span class="w"> </span><span class="nb">time</span><span class="w"> </span>with<span class="w"> </span>chronyc.
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>Time<span class="w"> </span>synchronization<span class="w"> </span>was<span class="w"> </span>successful.
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>User<span class="w"> </span>authorized<span class="w"> </span>to<span class="w"> </span>enroll<span class="w"> </span>computers:<span class="w"> </span>admin
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>Password<span class="w"> </span><span class="k">for</span><span class="w"> </span>admin@DEMO.LABS:<span class="w"> </span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>Successfully<span class="w"> </span>retrieved<span class="w"> </span>CA<span class="w"> </span>cert
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">    </span>Subject:<span class="w">     </span><span class="nv">CN</span><span class="o">=</span>Certificate<span class="w"> </span>Authority,O<span class="o">=</span>DEMO.LABS
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">    </span>Issuer:<span class="w">      </span><span class="nv">CN</span><span class="o">=</span>Certificate<span class="w"> </span>Authority,O<span class="o">=</span>DEMO.LABS
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">    </span>Valid<span class="w"> </span>From:<span class="w">  </span><span class="m">2024</span>-07-16<span class="w"> </span><span class="m">07</span>:52:09+00:00
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span>Valid<span class="w"> </span>Until:<span class="w"> </span><span class="m">2044</span>-07-16<span class="w"> </span><span class="m">07</span>:52:09+00:00
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>Enrolled<span class="w"> </span><span class="k">in</span><span class="w"> </span>IPA<span class="w"> </span>realm<span class="w"> </span>DEMO.LABS
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>Created<span class="w"> </span>/etc/ipa/default.conf
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>Configured<span class="w"> </span>/etc/sssd/sssd.conf
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>Systemwide<span class="w"> </span>CA<span class="w"> </span>database<span class="w"> </span>updated.
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>Hostname<span class="w"> </span><span class="o">(</span>rhel9-idm-client-0.demo.labs<span class="o">)</span><span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>have<span class="w"> </span>A/AAAA<span class="w"> </span>record.
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>Adding<span class="w"> </span>SSH<span class="w"> </span>public<span class="w"> </span>key<span class="w"> </span>from<span class="w"> </span>/etc/ssh/ssh_host_rsa_key.pub
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>Adding<span class="w"> </span>SSH<span class="w"> </span>public<span class="w"> </span>key<span class="w"> </span>from<span class="w"> </span>/etc/ssh/ssh_host_ecdsa_key.pub
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>Adding<span class="w"> </span>SSH<span class="w"> </span>public<span class="w"> </span>key<span class="w"> </span>from<span class="w"> </span>/etc/ssh/ssh_host_ed25519_key.pub
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>SSSD<span class="w"> </span>enabled
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>Configured<span class="w"> </span>/etc/openldap/ldap.conf
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>Configured<span class="w"> </span>/etc/ssh/ssh_config
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>Configured<span class="w"> </span>/etc/ssh/sshd_config.d/04-ipa.conf
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>Configuring<span class="w"> </span>demo.labs<span class="w"> </span>as<span class="w"> </span>NIS<span class="w"> </span>domain.
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>Configured<span class="w"> </span>/etc/krb5.conf<span class="w"> </span><span class="k">for</span><span class="w"> </span>IPA<span class="w"> </span>realm<span class="w"> </span>DEMO.LABS
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>Client<span class="w"> </span>configuration<span class="w"> </span>complete.
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>The<span class="w"> </span>ipa-client-install<span class="w"> </span><span class="nb">command</span><span class="w"> </span>was<span class="w"> </span>successful
+</span></code></pre></div>
+<p>Up to this point, everything should be fine, the system has been configured and joined the Identity Management Kerberos realm, let's proceed with some checks.</p>
+<h2 id="verify-host-registration">Verify host registration</h2>
+<h3 id="using-the-idm-gui">Using the IdM GUI</h3>
+<p>Red Hat Identity Management setup also configures a web UI that can be accessed using the following data:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>URL</td>
+<td><a href="https://idm.demo.labs">https://idm.demo.labs</a></td>
+</tr>
+<tr>
+<td>User</td>
+<td>admin</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>admin123</td>
+</tr>
+</tbody>
+</table>
+<p>Under the <strong>Hosts</strong> tab, you can verify that the new server is present:</p>
+<p><img alt="" src="assets/idm-host.png" /></p>
+<p>By clicking on the host name, you can access the related details.</p>
+<p><img alt="" src="assets/idm-host-details.png" /></p>
+<h3 id="using-the-cli">Using the CLI</h3>
+<p>You can also verify that the setup completed successfully trying to issue a <em>ipa</em> command to find the server.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ipa<span class="w"> </span>server-find
+</span></code></pre></div>
+<p>The utility is present, but the command will fail, as we need a Kerberos ticket for the <em>rhel9-idm-client-0.demo.labs</em> server.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="o">[</span>sysadmin@rhel9-idm-client-0<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>ipa<span class="w"> </span>server-find
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>ipa:<span class="w"> </span>ERROR:<span class="w"> </span>did<span class="w"> </span>not<span class="w"> </span>receive<span class="w"> </span>Kerberos<span class="w"> </span>credentials
+</span></code></pre></div>
+<p>To perform this operation, we will use the <strong>kinit</strong> utility and try to issue the ticket with user <em>admin</em>, when prompted, input <strong>admin123</strong> as the password:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kinit<span class="w"> </span>admin
+</span></code></pre></div>
+<p>Now we can issue a command to show that the configuration</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ipa<span class="w"> </span>server-find
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="o">[</span>sysadmin@rhel9-idm-client-0<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>ipa<span class="w"> </span>server-find
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--------------------
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="m">1</span><span class="w"> </span>IPA<span class="w"> </span>server<span class="w"> </span>matched
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>--------------------
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span>Server<span class="w"> </span>name:<span class="w"> </span>idm.demo.labs
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span>Min<span class="w"> </span>domain<span class="w"> </span>level:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span>Max<span class="w"> </span>domain<span class="w"> </span>level:<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>----------------------------
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>Number<span class="w"> </span>of<span class="w"> </span>entries<span class="w"> </span>returned<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>----------------------------
+</span></code></pre></div>
+<p>The output looks way better, we were able to issue a Kerberos ticket and access server information.</p>
+<h3 id="logging-in-as-an-idm-user">Logging in as an IdM user</h3>
+<p>Now let's try to use the use the <em>admin</em> user to log into the server.</p>
+<p>In another shell, let's try to ssh into the server using the <em>admin</em> user.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>ssh<span class="w"> </span>admin@rhel9-idm-client-0.demo.labs
+</span></code></pre></div>
+<p>Using the password <strong>admin123</strong> we will be able to login.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>❯<span class="w"> </span>ssh<span class="w"> </span>admin@rhel9-idm-client-0.demo.labs
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">(</span>admin@rhel9-idm-client-0.demo.labs<span class="o">)</span><span class="w"> </span>Password:<span class="w"> </span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Register<span class="w"> </span>this<span class="w"> </span>system<span class="w"> </span>with<span class="w"> </span>Red<span class="w"> </span>Hat<span class="w"> </span>Insights:<span class="w"> </span>insights-client<span class="w"> </span>--register
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Create<span class="w"> </span>an<span class="w"> </span>account<span class="w"> </span>or<span class="w"> </span>view<span class="w"> </span>all<span class="w"> </span>your<span class="w"> </span>systems<span class="w"> </span>at<span class="w"> </span>https://red.ht/insights-dashboard
+</span></code></pre></div>
+<p>Verify that the <em>/home/admin</em> directory has been created</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ls<span class="w"> </span>-latr<span class="w"> </span>/home/admin
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="o">[</span>admin@rhel9-idm-client-0<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>ls<span class="w"> </span>-latr<span class="w"> </span>/home/admin/
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>total<span class="w"> </span><span class="m">12</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>drwxr-xr-x.<span class="w"> </span><span class="m">4</span><span class="w"> </span>root<span class="w">  </span>root<span class="w">    </span><span class="m">35</span><span class="w"> </span>Jul<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">04</span>:47<span class="w"> </span>..
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>-rw-------.<span class="w"> </span><span class="m">1</span><span class="w"> </span>admin<span class="w"> </span>admins<span class="w"> </span><span class="m">492</span><span class="w"> </span>Jul<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">04</span>:47<span class="w"> </span>.bashrc
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>-rw-------.<span class="w"> </span><span class="m">1</span><span class="w"> </span>admin<span class="w"> </span>admins<span class="w"> </span><span class="m">141</span><span class="w"> </span>Jul<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">04</span>:47<span class="w"> </span>.bash_profile
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>-rw-------.<span class="w"> </span><span class="m">1</span><span class="w"> </span>admin<span class="w"> </span>admins<span class="w">  </span><span class="m">18</span><span class="w"> </span>Jul<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">04</span>:47<span class="w"> </span>.bash_logout
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>drwx------.<span class="w"> </span><span class="m">2</span><span class="w"> </span>admin<span class="w"> </span>admins<span class="w">  </span><span class="m">62</span><span class="w"> </span>Jul<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">04</span>:47<span class="w"> </span>.
+</span></code></pre></div>
+<p>Everything is configured and ready to be used.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.code.copy", "navigation.expand", "content.tooltips"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
